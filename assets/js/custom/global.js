@@ -8,6 +8,7 @@ $(document).ready(function(){
     'use strict';
 
     var portfolioContainer,
+    aboutContainer,
     HEIGHT,
     WIDTH;
 
@@ -16,9 +17,12 @@ $(document).ready(function(){
     function init(){
         HEIGHT = window.innerHeight;
         WIDTH = window.innerWidth;
-        portfolioContainer = document.querySelector('.portfolio__wrap');
+        portfolioContainer = document.querySelector('.portfolio-js');
+        aboutContainer = document.querySelector('.about-js');
 
         portfolioContainer.style.height = HEIGHT;
+        aboutContainer.style.height = HEIGHT;
+
     }
 
 })();
@@ -26,7 +30,7 @@ $(document).ready(function(){
 ///smoothscroll
 (function() // Code in a function to create an isolate scope
 {
-var speed = 750;
+var speed = 1500;
 var moving_frequency = 15; // Affects performance !
 var links = document.getElementsByTagName('a');
 var href;
@@ -78,3 +82,20 @@ var getScrollTopDocument = function()
     return document.documentElement.scrollTop + document.body.scrollTop;
 };
 })();
+
+
+
+function isScrolledIntoView($elem) {
+   var docViewTop = $(window).scrollTop();
+   var docViewBottom = docViewTop + $(window).height();
+
+   var elemTop = $elem.offset().top;
+   var elemMiddle = elemTop + $elem.height()/2;
+   return docViewBottom >= elemMiddle && docViewTop <= elemMiddle;
+}
+$(window).scroll(function(){
+   $elem = $(".aboutbg"); //or what element you like
+   if(isScrolledIntoView($elem)){
+      $elem.fadeIn(5000);
+   }
+});
