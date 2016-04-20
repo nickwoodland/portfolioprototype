@@ -1,6 +1,8 @@
 $(document).ready(function(){
   $('.portfolio__slider-js').slick({
-      speed:1000
+      speed:2000,
+      prevArrow:'.portfolio-nav__link--left',
+      nextArrow:'.portfolio-nav__link--right'
   });
 });
 
@@ -94,8 +96,12 @@ function isScrolledIntoView($elem) {
    return docViewBottom >= elemMiddle && docViewTop <= elemMiddle;
 }
 $(window).scroll(function(){
-   $elem = $(".aboutbg"); //or what element you like
-   if(isScrolledIntoView($elem)){
-      $elem.fadeIn(5000);
+   $aboutbg = $(".aboutbg"); //or what element you like
+   $animateborder = $(".animateborder");
+   if(isScrolledIntoView($aboutbg)){
+       $aboutbg.addClass("aboutbg--visible");
+   }
+   if(isScrolledIntoView($animateborder)){
+       $animateborder.addClass("animateborder--expand");
    }
 });
