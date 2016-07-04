@@ -1,9 +1,31 @@
+(function() {
+    initScrolljack(MQ, true);
+
+    spaceInit();
+    animate(spaceWrapper);
+})();
+
 $(document).ready(function(){
+    // init jquery smoothscroll and slider
   $('.portfolio__slider-js').slick({
-      speed:2000,
+      speed:1000,
       prevArrow:'.portfolio-nav__link--left',
       nextArrow:'.portfolio-nav__link--right'
   });
+
+  $('a[href*="#"]').on('click', function (e) {
+      // prevent default action and bubbling
+      e.preventDefault();
+      e.stopPropagation();
+      // set target to anchor's "href" attribute
+      var target = $(this).attr('href');
+      // scroll to each target
+      $(target).velocity('scroll', {
+          duration: 1000,
+          easing: 'ease-in-out'
+      });
+  });
+
 });
 
 (function() {
@@ -11,6 +33,7 @@ $(document).ready(function(){
 
     var portfolioContainer,
     aboutContainer,
+    contactContainer,
     HEIGHT,
     WIDTH;
 
@@ -19,89 +42,15 @@ $(document).ready(function(){
     function init(){
         HEIGHT = window.innerHeight;
         WIDTH = window.innerWidth;
+
         portfolioContainer = document.querySelector('.portfolio-js');
         aboutContainer = document.querySelector('.about-js');
+        contactContainer = document.querySelector('.contact-js');
 
         portfolioContainer.style.height = HEIGHT;
         aboutContainer.style.height = HEIGHT;
+        contactContainer.style.height = HEIGHT;
 
     }
 
 })();
-
-///smoothscroll
-(function() // Code in a function to create an isolate scope
-{
-var speed = 1500;
-var moving_frequency = 15; // Affects performance !
-var links = document.getElementsByTagName('a');
-var href;
-for(var i=0; i<links.length; i++)
-{
-    href = (links[i].attributes.href === undefined) ? null : links[i].attributes.href.nodeValue.toString();
-    if(href !== null && href.length > 1 && href.substr(0, 1) == '#')
-    {
-        links[i].onclick = function()
-        {
-            var element;
-            var href = this.attributes.href.nodeValue.toString();
-            if(element = document.getElementById(href.substr(1)))
-            {
-                var hop_count = speed/moving_frequency
-                var getScrollTopDocumentAtBegin = getScrollTopDocument();
-                var gap = (getScrollTopElement(element) - getScrollTopDocumentAtBegin) / hop_count;
-
-                for(var i = 1; i <= hop_count; i++)
-                {
-                    (function()
-                    {
-                        var hop_top_position = gap*i;
-                        setTimeout(function(){  window.scrollTo(0, hop_top_position + getScrollTopDocumentAtBegin); }, moving_frequency*i);
-                    })();
-                }
-            }
-
-            return false;
-        };
-    }
-}
-
-var getScrollTopElement =  function (e)
-{
-    var top = 0;
-
-    while (e.offsetParent != undefined && e.offsetParent != null)
-    {
-        top += e.offsetTop + (e.clientTop != null ? e.clientTop : 0);
-        e = e.offsetParent;
-    }
-
-    return top;
-};
-
-var getScrollTopDocument = function()
-{
-    return document.documentElement.scrollTop + document.body.scrollTop;
-};
-})();
-
-
-
-function isScrolledIntoView($elem) {
-   var docViewTop = $(window).scrollTop();
-   var docViewBottom = docViewTop + $(window).height();
-
-   var elemTop = $elem.offset().top;
-   var elemMiddle = elemTop + $elem.height()/2;
-   return docViewBottom >= elemMiddle && docViewTop <= elemMiddle;
-}
-$(window).scroll(function(){
-   $aboutbg = $(".aboutbg"); //or what element you like
-   $animateborder = $(".animateborder");
-   if(isScrolledIntoView($aboutbg)){
-       $aboutbg.addClass("aboutbg--visible");
-   }
-   if(isScrolledIntoView($animateborder)){
-       $animateborder.addClass("animateborder--expand");
-   }
-});

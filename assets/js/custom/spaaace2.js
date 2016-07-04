@@ -1,4 +1,4 @@
-(function() {
+//(function() {
     'use strict';
     // 'To actually be able to display anything with Three.js, we need three things:
     // A scene, a camera, and a renderer so we can render the scene with the camera.'
@@ -8,6 +8,7 @@
 
     // I guess we need this stuff too
     var container,
+        spaceWrapper,
         HEIGHT,
         WIDTH,
         fieldOfView,
@@ -32,8 +33,10 @@
         parameterCount,
         particles;
 
-    spaceInit();
-    animate();
+        spaceWrapper = document.querySelector('.js-spaaace-wrapper');
+
+    //spaceInit();
+/*    animate();*/
 
     function spaceInit() {
 
@@ -45,7 +48,7 @@
         fieldOfView = 75;
         aspectRatio = WIDTH / HEIGHT;
         nearPlane = 1;
-        farPlane = 3000;
+        farPlane = 10000;
 
         /* 	fieldOfView — Camera frustum vertical field of view.
 	       aspectRatio — Camera frustum aspect ratio.
@@ -89,7 +92,7 @@
 
             vertex.x = Math.random() * 2000 - 1000;
             vertex.y = Math.random() * 2000 - 1000;
-            vertex.z = Math.random() * 2000 - 1000;
+            vertex.z = Math.random() * 10000 - 1000;
 
             geometry.vertices.push(vertex);
         }
@@ -173,8 +176,30 @@
     }
 
     function animate() {
+
+        var sceneVisible = checkVisible();
         requestAnimationFrame(animate);
-        render();
+
+        if(sceneVisible){
+            render();
+        }
+    }
+
+    function checkVisible() {
+
+        var elementVisible = true;
+        if(spaceWrapper.classList.contains('visible')){
+            elementVisible = true;
+        } else {
+            elementVisible = false;
+        }
+
+        if(elementVisible){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     function render() {
@@ -183,8 +208,13 @@
         //set camera facing based on mouse position
         // mouseX & mouseY retreived using the function called on mousemove
         // the multiplication by 0.05 gives it the feeling of acceleration as it moves the camera incrementallly more than the mouse
-        camera.position.x += (mouseX/10 - camera.position.x) * 0.025;
-        camera.position.y += (-mouseY/10 - camera.position.y) * 0.025;
+        camera.position.x += (mouseX/50 - camera.position.x) * 0.025;
+        camera.position.y += (-mouseY/50 - camera.position.y) * 0.025;
+        //camera.position.z += (-mouseX/10 - camera.position.x) * 0.025;
+        //camera.position.z += (mouseY/10 - camera.position.y) * 0.025;
+
+        camera.position.z -= 0.3;
+        //camera.position.z += 1;
 
 
 
@@ -253,4 +283,4 @@
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
-})();
+//})();
